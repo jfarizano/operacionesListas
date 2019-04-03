@@ -27,6 +27,7 @@ SList slist_agregar_inicio(SList lista, char *nombre, int edad, char *lugarNac) 
   SNodo *nuevoNodo = malloc(sizeof(SNodo));
   nuevoNodo->dato = malloc(sizeof(Persona));
 
+  // Pasar este bloque a crear_persona()
   nuevoNodo->EDAD = edad;
   int len = strlen(nombre);
   nuevoNodo->NOMBRE = malloc(sizeof(char) * (len + 1));

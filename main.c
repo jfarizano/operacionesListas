@@ -4,7 +4,7 @@
 #include "operacionesListas.h"
 
 
-void imprimir_datos(struct _Persona *persona) {
+void imprimir_nombre(struct _Persona *persona) {
   printf("%s\n", persona->nombre);
 }
 
@@ -12,8 +12,19 @@ void agregar_uno_edad(struct _Persona *persona) {
   persona->edad = persona->edad + 1;
 }
 
+void kawaizar_persona(struct _Persona *persona) {
+  int len = strlen(persona->nombre);
+  persona->nombre = realloc(persona->nombre, (sizeof(char) * (len + 4)));
+  persona->nombre[len] = '-';
+  persona->nombre[len + 1] = 's';
+  persona->nombre[len + 2] = 'a';
+  persona->nombre[len + 3] = 'n';
+  persona->nombre[len + 4] = '\0';
+
+}
+
 int nombre_corto(struct _Persona *persona) {
-  if (strlen(persona->nombre) < 5){
+  if (strlen(persona->nombre) <= 8){
     return 1;
   } else {
     return 0;
@@ -31,12 +42,10 @@ int main() {
   lista = slist_agregar_inicio(lista, nombre2, 3, lugarNac);
   lista = slist_agregar_final(lista, nombre3, 99, lugarNac);
   lista = slist_agregar_inicio(lista, nombre4, 4, lugarNac);
-  map(lista, imprimir_datos);
-  lista = filter(lista, nombre_corto);
+  map(lista, imprimir_nombre);
+  lista = map(lista, kawaizar_persona);
   printf("===============\n");
-  map(lista, imprimir_datos);
-  slist_destruir(lista);
-  map(lista, imprimir_datos);
+  map(lista, imprimir_nombre);
 
   return 0;
 }
