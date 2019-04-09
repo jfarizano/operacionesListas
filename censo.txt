@@ -1,0 +1,50 @@
+Nelda,74,Basseterre
+Rick,7,Zambia
+Macabeo,36,Apia
+Ivana,21,Omán
+Wilka,64,Yibuti
+Doménico,21,Bagdad
+Yung,26,Samoa
+Mauro,100,Port Vila
+Filiberto,63,Banjul
+Giannina,47,Gambia
+Diosdado,1,Sáhara Occidental
+Blanca,27,Nicaragua
+Lavinia,65,Astaná
+Rodolfo,39,Bandar Seri Begawan
+Cándido,68,Berna
+Cid,70,Funafuti
+Rose,6,Lilongüe
+Imanol,25,Tanzania
+Pompeyo,35,Granada
+Nuriel,90,Podgorica
+Afra,53,Ulán Bator
+Guntero,53,Honiara
+Nelda,34,Santiago
+Viviana,79,Tirana
+Hoshi,9,Bután
+Ariadna,29,Bagdad
+Stanley,56,Madrid
+Didier,82,Letonia
+Rayén,20,Biskek
+Constanza,13,Port Vila
+Herminda,26,Uzbekistán
+Huberto,31,Isla De Navidad
+Rod,34,París
+Atenea,27,Islas Feroe
+Pelayo,78,Isla Pitcairn
+Prisca,49,Praia
+Loyola,16,Isla Bouvet
+Pandora,1,Panamá
+Crispín,59,Barbados
+Taci,49,Tanzania
+Jordán,68,Panamá
+Aquiles,68,Birmania
+Necul,28,Santa Lucía
+Amarinta,8,Asunción
+Rayén,98,Macedonia
+Armanda,18,Rabat
+Teofanía,36,Guinea Bissau
+Estefanía,10,Kiribati
+Magda,64,Manama
+Ingrid,86,Mónaco

@@ -2,19 +2,21 @@
 #define __OPERACIONES_H__
 
 #include <stddef.h>
+/*
 #define NOMBRE dato->nombre
 #define EDAD dato->edad
 #define LUGAR_NAC dato->lugarDeNacimiento
+*/
 
 ////////////////////////////////////
 // Definiciones de estructuras y tipos de datos
 
-typedef struct _SNodo {
-  struct _Persona *dato;
-  struct _SNodo *sig;
-} SNodo;
+typedef struct _GNodo {
+  void *dato;
+  struct _GNodo *sig;
+} GNodo;
 
-typedef SNodo *SList;
+typedef GNodo *GList;
 
 typedef struct _Persona {
     char *nombre;
@@ -22,27 +24,37 @@ typedef struct _Persona {
     char *lugarDeNacimiento; // Pais o capital
 } Persona;
 
-typedef int (*Predicado) (struct _Persona*);
+typedef int (*Predicado) (void *dato);
 
-typedef void (*Funcion) (struct _Persona*);
+typedef void (*Funcion) (void *dato);
 
 ////////////////////////////////////
 // Prototipos de funciones
 
-SList slist_crear();
+GList glist_crear();
 
-void slist_destruir(SList lista);
+struct _Persona *crear_persona(char *nombre, int edad, char *lugarNac);
 
-int slist_vacia(SList lista);
+void glist_persona_destruir(GList lista);
 
-SList slist_agregar_inicio(SList lista, char *nombre, int edad, char *lugarDeNac);
+void destruir_persona(struct _Persona *dato);
 
-SList slist_agregar_final(SList lista, char *nombre, int edad, char *lugarDeNac);
+void glist_string_destruir(GList lista);
 
-int slist_longitud(SList lista);
+int glist_vacia(GList lista);
 
-SList map(SList lista, Funcion f);
+GList agregar_persona_inicio(GList lista, char *nombre, int edad, char *lugarNac);
 
-SList filter(SList lista, Predicado p);
+GList agregar_persona_final(GList lista, char *nombre, int edad, char *lugarNac);
+
+GList glist_agregar_inicio(GList lista, void *dato);
+
+GList glist_agregar_final(GList lista, void *dato);
+
+int glist_longitud(GList lista);
+
+GList map(GList lista, Funcion f);
+
+GList filter(GList lista, Predicado p);
 
 #endif /* __OPERACIONES_H__ */
