@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "operacionesListas.h"
+#include "glist.h"
+
+
 
 GList glist_crear() {
   return NULL;
@@ -14,7 +16,16 @@ int glist_vacia(GList lista) {
 GList glist_agregar_inicio(GList lista, void *dato) {
   GNodo *nuevoNodo = malloc(sizeof(GNodo));
   nuevoNodo->dato = dato;
-  nuevoNodo->sig = lista;
+  
+  if (glist_vacia(lista)) {
+    nuevoNodo->sig = nuevoNodo;
+    nuevoNodo->ant = nuevoNodo;
+  } else {
+    nuevoNodo->sig = lista;
+    nuevoNodo->ant = lista->ant;
+    nuevoNodo->ant->sig = nuevoNodo;
+    lista->ant = nuevoNodo;
+  }
 
   return nuevoNodo;
 }
@@ -22,23 +33,26 @@ GList glist_agregar_inicio(GList lista, void *dato) {
 GList glist_agregar_final(GList lista, void *dato) {
   GNodo *nuevoNodo = malloc(sizeof(GNodo));
   nuevoNodo->dato = dato;
-  nuevoNodo->sig = NULL;
 
   if (glist_vacia(lista)) {
+    nuevoNodo->sig = nuevoNodo;
+    nuevoNodo->ant = nuevoNodo;
     return nuevoNodo;
+  } else {
+    nuevoNodo->sig = lista;
+    nuevoNodo->ant = lista->ant;
+    nuevoNodo->ant->sig = nuevoNodo;
+    lista->ant = nuevoNodo;
+
+    return lista;
   }
-
-  GList nodo = lista;
-  for (;!glist_vacia(nodo->sig); nodo = nodo->sig);
-
-  nodo->sig = nuevoNodo;
-  return lista;
 }
 
 int glist_longitud(GList lista) {
   int len = 0;
   
-  for (GNodo *nodo = lista; !glist_vacia(nodo); nodo = nodo->sig, len++);
+  for (GNodo *nodo = lista; nodo->sig != lista; nodo = nodo->sig, len++);
+  len++;
 
   return len;
 
@@ -46,24 +60,33 @@ int glist_longitud(GList lista) {
 
 GList map(GList lista, Funcion f, Copia c) {
   GList nuevaLista = glist_crear();
+  GNodo *nodo = lista;
   void *copiaDato;
   
-  for (GNodo *nodo = lista; !glist_vacia(nodo); nodo = nodo->sig) {
+  for (; nodo->sig != lista; nodo = nodo->sig) {
     copiaDato = c(nodo->dato);
     f(copiaDato);
     nuevaLista = glist_agregar_final(nuevaLista, copiaDato);
   }
+    copiaDato = c(nodo->dato);
+    f(copiaDato);
+    nuevaLista = glist_agregar_final(nuevaLista, copiaDato);
 
   return nuevaLista;
 }
 
 GList filter(GList lista, Predicado p, Copia c) {
   GList nuevaLista = glist_crear();
+  GNodo *nodo = lista;
 
-  for (GNodo *nodo = lista; !glist_vacia(nodo); nodo = nodo->sig) {
+  for (; nodo->sig != lista; nodo = nodo->sig) {
     if (p(nodo->dato)){
       nuevaLista = glist_agregar_final(nuevaLista, c(nodo->dato));
     }
+  }
+
+  if (p(nodo->dato)){
+      nuevaLista = glist_agregar_final(nuevaLista, c(nodo->dato));
   }
   
   return nuevaLista;
@@ -82,21 +105,11 @@ Persona *crear_persona(char *nombre, int edad, char *lugarNac) {
   return persona;
 }
 
-void glist_persona_destruir(GList lista) {
-  GNodo *nodoAEliminar;
-
-  while (!glist_vacia(lista)) {
-    nodoAEliminar = lista;
-    lista = lista->sig;
-    destruir_persona(nodoAEliminar->dato);
-    free(nodoAEliminar->dato);
-    free(nodoAEliminar);
-  }
-}
-
-void destruir_persona(Persona *dato) {
-  free(dato->nombre);
-  free(dato->lugarDeNacimiento);
+void destruir_persona(void *dato) {
+  Persona *persona = (Persona*)dato;
+  free(persona->nombre);
+  free(persona->lugarDeNacimiento);
+  free(persona);
 }
 
 GList agregar_persona_inicio(GList lista, char *nombre, int edad, char *lugarNac) {
@@ -120,13 +133,17 @@ void *copiar_persona(void *dato){
   return (void*)copia; 
 }
 
-void glist_string_destruir(GList lista) {
+void glist_destruir(GList lista, Destruir destruir) {
   GNodo *nodoAEliminar;
+  GNodo *nodoInicial = lista;
 
-  while (!glist_vacia(lista)) {
+  while (lista->sig != nodoInicial) {
     nodoAEliminar = lista;
     lista = lista->sig;
-    free(nodoAEliminar->dato);
+    destruir(nodoAEliminar->dato);
     free(nodoAEliminar);
   }
+
+  destruir(lista->dato);
+  free(lista);
 }

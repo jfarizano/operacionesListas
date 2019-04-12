@@ -1075,7 +1075,7 @@ Domacal,31,Taskent
 Ule,52,Pionyang
 Orlando,42,Hong Kong
 Ronan,32,Irlanda
-Daniel,90,Vilna
+Daniel-san,90,Vilna
 Sabas,54,Berna
 Tatiana,19,Italia
 Solón,31,Conakri
@@ -6733,7 +6733,7 @@ Wenceslao,69,Haiti
 Almendra,36,Vilna
 Primitiva,67,Islas Virgenes Británicas
 Jezabel,42,Port Vila
-Daniel,61,Pekín
+Daniel-san,61,Pekín
 Roberta,45,Holanda
 Amina,94,Lima
 Andrómaca,35,Nepal

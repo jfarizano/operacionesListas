@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "operacionesListas.h"
+#include "glist.h"
 
 
 Persona *linea_archivo_a_persona(char *lineaBuff) {
@@ -39,6 +39,7 @@ Persona *linea_archivo_a_persona(char *lineaBuff) {
   free(nombre);
   free(lugarNac);
   free(strBuff);
+
   return persona;
 }
 
@@ -69,6 +70,23 @@ GList lectura_censo(GList lista, char *nombre_archivo, int *cantElementos) {
   return lista;
 }
 
+void salida_archivo(GList lista, char *nombreArchivo) {
+  FILE *archivo = fopen(nombreArchivo, "w");
+  assert(archivo != NULL);
+  Persona *persona;
+  GNodo *nodo = lista;
+
+  for (; nodo->sig != lista; nodo = nodo->sig) {
+    persona = (Persona*)nodo->dato;
+    fprintf(archivo, "%s,%d,%s\r\n", persona->nombre ,persona->edad, persona->lugarDeNacimiento);
+  }
+  
+  persona = (Persona*)nodo->dato;
+  fprintf(archivo, "%s,%d,%s\r\n", persona->nombre ,persona->edad, persona->lugarDeNacimiento);
+
+  fclose(archivo);
+}
+
 void imprimir_datos(GList lista) {
   Persona *persona;
 
@@ -80,9 +98,27 @@ void imprimir_datos(GList lista) {
   } 
 }
 
-// void maradonizar()
+void maradonizar(void *dato) {
+  Persona *persona = (Persona*)dato;
+  char *nombre = persona->nombre;
+  char *lugarNac = persona->lugarDeNacimiento;
 
-// void argentinizar()
+  for (int i = 0; i < strlen(nombre); i++) {
+    if (nombre[i] == 'a' || nombre[i] == 'i' || nombre[i] == 'o' || nombre[i] == 'u') {
+      nombre[i] = 'e';
+    } else if (nombre[i] == 'A' || nombre[i] == 'I' || nombre[i] == 'O' || nombre[i] == 'U') {
+      nombre[i] = 'E';
+    }
+  }
+
+  for (int i = 0; i < strlen(lugarNac); i++) {
+    if (lugarNac[i] == 'a' || lugarNac[i] == 'i' || lugarNac[i] == 'o' || lugarNac[i] == 'u') {
+      lugarNac[i] = 'e';
+    } else if (lugarNac[i] == 'A' || lugarNac[i] == 'I' || lugarNac[i] == 'O' || lugarNac[i] == 'U') {
+      lugarNac[i] = 'E';
+    }
+  }
+}
 
 void karate_kid(void *dato) {
   Persona *persona = (Persona*)dato;
@@ -100,16 +136,23 @@ void karate_kid(void *dato) {
 
 int nombre_corto(void *dato) {
   Persona *persona = (Persona*)dato;
-  if (strlen(persona->nombre) <= 6){
-    return 1;
-  } else {
-    return 0;
-  }
+  return strlen(persona->nombre) <= 6;
 }
 
-// int dolar()
 
-// int g20()
+int mercosur(void *dato) {
+  int flag = 0;
+  Persona *persona = (Persona*)dato;
+  char *paises[] = {"Argentina", "Brasil", "Paraguay", "Uruguay"};
+  
+  for (int i = 0; i < 4 && flag == 0; i++) {
+    if (strcmp(persona->lugarDeNacimiento, paises[i]) == 0) {
+      flag = 1;
+    }
+  }
+
+  return flag;
+}
 
 int main() {
   int cantPersonas = 0;
@@ -118,21 +161,22 @@ int main() {
   listaPersonas = lectura_censo(listaPersonas, "censo.txt", &cantPersonas);
 
   GList map1 = map(listaPersonas, karate_kid, copiar_persona);
-  // GList map2 = .....
+  salida_archivo(map1, "map1.txt");
+  glist_destruir(map1, destruir_persona);
+
+  GList map2 = map(listaPersonas, maradonizar, copiar_persona);
+  salida_archivo(map2, "map2.txt");
+  glist_destruir(map2, destruir_persona);
+
   GList filter1 = filter(listaPersonas, nombre_corto, copiar_persona);
-  // GList filter2 = filter.....
+  salida_archivo(filter1,"filter1.txt");
+  glist_destruir(filter1, destruir_persona);
 
-  // salida_archivo(map1);
-  // salida_archivo(map2);
-  // salida_archivo(filter1);
-  // salida_archivo(filter2);
+  GList filter2 = filter(listaPersonas, mercosur, copiar_persona);
+  salida_archivo(filter2, "filter2.txt");
+  glist_destruir(filter2, destruir_persona);
+
+  glist_destruir(listaPersonas, destruir_persona);
   
-  glist_persona_destruir(listaPersonas);
-  glist_persona_destruir(map1);
-  // glist_persona_destruir(map2);
-  glist_persona_destruir(filter1);
-  // glist_persona_destruir(filter2);
-
-
   return 0;
 }
