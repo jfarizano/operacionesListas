@@ -24,7 +24,7 @@ Persona *linea_archivo_a_persona(char *lineaBuff) {
           strActual++;
           break;
         case 1:
-          edad = atoi(strBuff);
+          edad = atoi(strBuff); // Convierte el string de un int a un int
           strActual++;
           break;
         case 2:
@@ -36,6 +36,8 @@ Persona *linea_archivo_a_persona(char *lineaBuff) {
   }
 
   Persona *persona = crear_persona(nombre, edad, lugarNac);
+  free(nombre);
+  free(lugarNac);
   free(strBuff);
   return persona;
 }
@@ -60,9 +62,9 @@ GList lectura_censo(GList lista, char *nombre_archivo, int *cantElementos) {
       charBuff = fgetc(archivo);
     }
   }
-  
-  fclose(archivo);
+
   free(lineaBuff);
+  fclose(archivo);
   
   return lista;
 }
@@ -78,19 +80,23 @@ void agregar_uno_edad(Persona *persona) {
   persona->edad = persona->edad + 1;
 }
 
-void kawaizar_persona(Persona *persona) {
-  int len = strlen(persona->nombre);
-  persona->nombre = realloc(persona->nombre, (sizeof(char) * (len + 4)));
-  persona->nombre[len] = '-';
-  persona->nombre[len + 1] = 's';
-  persona->nombre[len + 2] = 'a';
-  persona->nombre[len + 3] = 'n';
-  persona->nombre[len + 4] = '\0';
-
+void karate_kid(void *dato) {
+  Persona *persona = (Persona*)dato;
+  
+  if (strcmp(persona->nombre, "Daniel") == 0){
+    int len = strlen(persona->nombre);
+    persona->nombre = realloc(persona->nombre, (sizeof(char) * (len + 5)));
+    persona->nombre[len] = '-';
+    persona->nombre[len + 1] = 's';
+    persona->nombre[len + 2] = 'a';
+    persona->nombre[len + 3] = 'n';
+    persona->nombre[len + 4] = '\0';
+  }
 }
 
-int nombre_corto(Persona *persona) {
-  if (strlen(persona->nombre) <= 8){
+int nombre_corto(void *dato) {
+  Persona *persona = (Persona*)dato;
+  if (strlen(persona->nombre) <= 6){
     return 1;
   } else {
     return 0;
@@ -101,8 +107,12 @@ int main() {
   GList listaPersonas = glist_crear();
   int cantPersonas = 0;
   listaPersonas = lectura_censo(listaPersonas, "censo.txt", &cantPersonas);
-  map(listaPersonas, imprimir_datos);
+  GList map1 = map(listaPersonas, karate_kid, copiar_persona);
+  GList filter1 = filter(listaPersonas, nombre_corto, copiar_persona);
+  
   glist_persona_destruir(listaPersonas);
+  glist_persona_destruir(map1);
+  glist_persona_destruir(filter1);
 
   return 0;
 }

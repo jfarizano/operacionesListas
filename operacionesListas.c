@@ -7,34 +7,8 @@ GList glist_crear() {
   return NULL;
 }
 
-Persona *crear_persona(char *nombre, int edad, char *lugarNac) {
-  Persona *persona = malloc(sizeof(Persona));
-  persona->edad = edad;
-  int len = strlen(nombre);
-  persona->nombre = malloc(sizeof(char) * (len + 1));
-  len = strlen(lugarNac);
-  persona->lugarDeNacimiento = malloc(sizeof(char) * (len + 1));
-  strcpy(persona->nombre, nombre);
-  strcpy(persona->lugarDeNacimiento, lugarNac);
-  
-  return persona;
-};
-
-
-void glist_persona_destruir(GList lista) {
-  GNodo *nodoAEliminar;
-  while (!glist_vacia(lista)) {
-    nodoAEliminar = lista;
-    lista = lista->sig;
-    destruir_persona(nodoAEliminar->dato);
-    free(nodoAEliminar->dato);
-    free(nodoAEliminar);
-  }
-}
-
-void destruir_persona(Persona *dato) {
-  free(dato->nombre);
-  free(dato->lugarDeNacimiento);
+int glist_vacia(GList lista) {
+  return lista == NULL;
 }
 
 void glist_string_destruir(GList lista) {
@@ -46,23 +20,6 @@ void glist_string_destruir(GList lista) {
     free(nodoAEliminar);
   }
 }
-
-int glist_vacia(GList lista) {
-  return lista == NULL;
-}
-
-GList agregar_persona_inicio(GList lista, char *nombre, int edad, char *lugarNac) {
-  Persona *persona = crear_persona(nombre, edad, lugarNac);
-  lista = glist_agregar_inicio(lista, persona);
-  return lista;
-}
-
-GList agregar_persona_final(GList lista, char *nombre, int edad, char *lugarNac) {
-  Persona *persona = crear_persona(nombre, edad, lugarNac);
-  lista = glist_agregar_final(lista, persona);
-  return lista;
-}
-
 
 GList glist_agregar_inicio(GList lista, void *dato) {
   GNodo *nuevoNodo = malloc(sizeof(GNodo));
@@ -95,24 +52,76 @@ int glist_longitud(GList lista) {
 
 }
 
-GList map(GList lista, Funcion f) {
+GList map(GList lista, Funcion f, Copia c) {
   GList nuevaLista = glist_crear();
-
-  for (GNodo *nodo = lista; !glist_vacia(nodo); nodo = nodo->sig)
-    nuevaLista = glist_agregar_final(nuevaLista, nodo->dato);
+  void *copiaDato;
   
-  for (GNodo *nodo = nuevaLista; !glist_vacia(nodo); nodo = nodo->sig)
-    f(nodo->dato);
+  for (GNodo *nodo = lista; !glist_vacia(nodo); nodo = nodo->sig){
+    copiaDato = c(nodo->dato);
+    f(copiaDato);
+    nuevaLista = glist_agregar_final(nuevaLista, copiaDato);
+  }
 
   return nuevaLista;
 }
 
-GList filter(GList lista, Predicado p) {
+GList filter(GList lista, Predicado p, Copia c) {
   GList nuevaLista = glist_crear();
+  void *dato;
 
-  for (GNodo *nodo = lista; !glist_vacia(nodo); nodo = nodo->sig)
-    if (p(nodo->dato))
-      nuevaLista = glist_agregar_final(nuevaLista, nodo->dato);  
-
+  for (GNodo *nodo = lista; !glist_vacia(nodo); nodo = nodo->sig){
+    dato = (void*)nodo->dato;
+    if (p(dato)){
+      nuevaLista = glist_agregar_final(nuevaLista, c(dato));
+    }
+  }
+  
   return nuevaLista;
+}
+
+Persona *crear_persona(char *nombre, int edad, char *lugarNac) {
+  Persona *persona = malloc(sizeof(Persona));
+  persona->edad = edad;
+  int len = strlen(nombre);
+  persona->nombre = malloc(sizeof(char) * (len + 1));
+  len = strlen(lugarNac);
+  persona->lugarDeNacimiento = malloc(sizeof(char) * (len + 1));
+  strcpy(persona->nombre, nombre);
+  strcpy(persona->lugarDeNacimiento, lugarNac);
+  
+  return persona;
+}
+
+void glist_persona_destruir(GList lista) {
+  GNodo *nodoAEliminar;
+  while (!glist_vacia(lista)) {
+    nodoAEliminar = lista;
+    lista = lista->sig;
+    destruir_persona(nodoAEliminar->dato);
+    free(nodoAEliminar->dato);
+    free(nodoAEliminar);
+  }
+}
+
+void destruir_persona(Persona *dato) {
+  free(dato->nombre);
+  free(dato->lugarDeNacimiento);
+}
+
+GList agregar_persona_inicio(GList lista, char *nombre, int edad, char *lugarNac) {
+  Persona *persona = crear_persona(nombre, edad, lugarNac);
+  lista = glist_agregar_inicio(lista, persona);
+  return lista;
+}
+
+GList agregar_persona_final(GList lista, char *nombre, int edad, char *lugarNac) {
+  Persona *persona = crear_persona(nombre, edad, lugarNac);
+  lista = glist_agregar_final(lista, persona);
+  return lista;
+}
+
+void *copiar_persona(void *dato){
+  Persona *persona = (void*)dato;
+  Persona *copia = crear_persona(persona->nombre, persona->edad, persona->lugarDeNacimiento);
+  return (void*)copia; 
 }

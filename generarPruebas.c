@@ -58,11 +58,11 @@ int main() {
     for (int j = 0; nodoPais != NULL && j != ubicPais; nodoPais = nodoPais->sig, j++);
     int edad = rand() % 100 + 1;
     
-    fprintf(prueba, "%s,%d,%s\r\n", (char*)nodoNombre->dato ,edad, (char*)nodoPais->dato);
+    fprintf(prueba, "%s,%d,%s\r\n", nodoNombre->dato ,edad, nodoPais->dato);
   }
   
-  glist_string_destruir(listaNombres);
-  glist_string_destruir(listaPaises);
+  glist_destruir_string(listaNombres);
+  glist_destruir_string(listaPaises);
 
   fclose(prueba);
   

@@ -20,7 +20,7 @@ Pompeyo,35,Granada
 Nuriel,90,Podgorica
 Afra,53,Ulán Bator
 Guntero,53,Honiara
-Nelda,34,Santiago
+Daniel,34,Santiago
 Viviana,79,Tirana
 Hoshi,9,Bután
 Ariadna,29,Bagdad

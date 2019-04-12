@@ -28,24 +28,16 @@ typedef int (*Predicado) (void *dato);
 
 typedef void (*Funcion) (void *dato);
 
+typedef void* (*Copia) (void *dato);
+
 ////////////////////////////////////
 // Prototipos de funciones
 
 GList glist_crear();
 
-struct _Persona *crear_persona(char *nombre, int edad, char *lugarNac);
-
-void glist_persona_destruir(GList lista);
-
-void destruir_persona(struct _Persona *dato);
-
 void glist_string_destruir(GList lista);
 
 int glist_vacia(GList lista);
-
-GList agregar_persona_inicio(GList lista, char *nombre, int edad, char *lugarNac);
-
-GList agregar_persona_final(GList lista, char *nombre, int edad, char *lugarNac);
 
 GList glist_agregar_inicio(GList lista, void *dato);
 
@@ -53,8 +45,20 @@ GList glist_agregar_final(GList lista, void *dato);
 
 int glist_longitud(GList lista);
 
-GList map(GList lista, Funcion f);
+GList map(GList lista, Funcion f, Copia c);
 
-GList filter(GList lista, Predicado p);
+GList filter(GList lista, Predicado p, Copia c);
+
+Persona *crear_persona(char *nombre, int edad, char *lugarNac);
+
+void glist_persona_destruir(GList lista);
+
+void destruir_persona(Persona *persona);
+
+GList agregar_persona_inicio(GList lista, char *nombre, int edad, char *lugarNac);
+
+GList agregar_persona_final(GList lista, char *nombre, int edad, char *lugarNac);
+
+void *copiar_persona(void *dato);
 
 #endif /* __OPERACIONES_H__ */
