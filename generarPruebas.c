@@ -6,11 +6,28 @@
 #include "glist.h"
 
 
+
+// caracter_especial(): char -> int
+//
+// toma un caracter y devuelve 1 si esta dentro del rango
+// de los caracteres permitidos (segun su valor en la 
+// tabla ascii), o 0 si no pertenece
+
 int caracter_especial(char charARevisar) {
   return ((charARevisar >= 33 && charARevisar <= 64) || 
           (charARevisar >= 91 && charARevisar <= 96) || 
           (charARevisar >= 123 && charARevisar <= 127));
 }
+
+// lectura_archivo(): GList, char, int -> GList
+//
+// Toma una lista (GList lista) y un archivo de texto que 
+// contenga los elementos a agregar, y devuelve una lista
+// con los elementos del archivo. Los caracteres especiales
+// son eliminados por el uso de la funcion caracter_especial.
+// El parametro *cantElementos es obtenido de la funcion main, 
+// o donde se aplique, y se usa como contador de elementos de
+// la lista.
 
 GList lectura_archivo(GList lista, char *nombreArchivo, int *cantElementos) {
   FILE *archivo = fopen(nombreArchivo, "r");
@@ -41,6 +58,13 @@ GList lectura_archivo(GList lista, char *nombreArchivo, int *cantElementos) {
 
   return lista;
 }
+
+// generar_archivo_persona(): size_t GList int GList int -> void
+//
+//
+
+
+
 
 void generar_archivo_personas(size_t volumenDatos, GList listaNombres, int cantNombres, GList listaPaises, int cantPaises) {
   FILE *archivo = fopen("censo.txt", "w");
