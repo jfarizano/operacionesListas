@@ -46,7 +46,7 @@ GList lectura_censo(GList lista, char *nombre_archivo, int *cantElementos) {
   FILE *archivo = fopen(nombre_archivo, "r");
   assert(archivo != NULL);
 
-  int charBuff;
+  char charBuff;
   char *lineaBuff = malloc(sizeof(char) * 70);
   
   for (int i = 0; (charBuff = fgetc(archivo)) != EOF;){
@@ -69,16 +69,20 @@ GList lectura_censo(GList lista, char *nombre_archivo, int *cantElementos) {
   return lista;
 }
 
-void imprimir_datos(void *dato) {
-  Persona *persona = dato;
-  printf("Nombre: %s, ", persona->nombre);
-  printf("edad: %d ", persona->edad);
-  printf("lugar de nac.: %s\n", persona->lugarDeNacimiento);
+void imprimir_datos(GList lista) {
+  Persona *persona;
+
+  for (GNodo *nodo = lista; !glist_vacia(nodo); nodo = nodo->sig) {
+    persona = (Persona*)nodo->dato;
+    printf("Nombre: %s, ", persona->nombre);
+    printf("edad: %d ", persona->edad);
+    printf("lugar de nac.: %s\n", persona->lugarDeNacimiento);
+  } 
 }
 
-void agregar_uno_edad(Persona *persona) {
-  persona->edad = persona->edad + 1;
-}
+// void maradonizar()
+
+// void argentinizar()
 
 void karate_kid(void *dato) {
   Persona *persona = (Persona*)dato;
@@ -103,16 +107,32 @@ int nombre_corto(void *dato) {
   }
 }
 
+// int dolar()
+
+// int g20()
+
 int main() {
-  GList listaPersonas = glist_crear();
   int cantPersonas = 0;
+  
+  GList listaPersonas = glist_crear();
   listaPersonas = lectura_censo(listaPersonas, "censo.txt", &cantPersonas);
+
   GList map1 = map(listaPersonas, karate_kid, copiar_persona);
+  // GList map2 = .....
   GList filter1 = filter(listaPersonas, nombre_corto, copiar_persona);
+  // GList filter2 = filter.....
+
+  // salida_archivo(map1);
+  // salida_archivo(map2);
+  // salida_archivo(filter1);
+  // salida_archivo(filter2);
   
   glist_persona_destruir(listaPersonas);
   glist_persona_destruir(map1);
+  // glist_persona_destruir(map2);
   glist_persona_destruir(filter1);
+  // glist_persona_destruir(filter2);
+
 
   return 0;
 }

@@ -35,8 +35,6 @@ typedef void* (*Copia) (void *dato);
 
 GList glist_crear();
 
-void glist_string_destruir(GList lista);
-
 int glist_vacia(GList lista);
 
 GList glist_agregar_inicio(GList lista, void *dato);
@@ -60,5 +58,7 @@ GList agregar_persona_inicio(GList lista, char *nombre, int edad, char *lugarNac
 GList agregar_persona_final(GList lista, char *nombre, int edad, char *lugarNac);
 
 void *copiar_persona(void *dato);
+
+void glist_string_destruir(GList lista);
 
 #endif /* __OPERACIONES_H__ */
