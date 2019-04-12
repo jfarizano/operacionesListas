@@ -4,7 +4,6 @@
 #include "glist.h"
 
 
-
 GList glist_crear() {
   return NULL;
 }
@@ -112,19 +111,19 @@ void destruir_persona(void *dato) {
   free(persona);
 }
 
-GList agregar_persona_inicio(GList lista, char *nombre, int edad, char *lugarNac) {
-  Persona *persona = crear_persona(nombre, edad, lugarNac);
-  lista = glist_agregar_inicio(lista, persona);
+// GList agregar_persona_inicio(GList lista, char *nombre, int edad, char *lugarNac) {
+//   Persona *persona = crear_persona(nombre, edad, lugarNac);
+//   lista = glist_agregar_inicio(lista, persona);
 
-  return lista;
-}
+//   return lista;
+// }
 
-GList agregar_persona_final(GList lista, char *nombre, int edad, char *lugarNac) {
-  Persona *persona = crear_persona(nombre, edad, lugarNac);
-  lista = glist_agregar_final(lista, persona);
+// GList agregar_persona_final(GList lista, char *nombre, int edad, char *lugarNac) {
+//   Persona *persona = crear_persona(nombre, edad, lugarNac);
+//   lista = glist_agregar_final(lista, persona);
 
-  return lista;
-}
+//   return lista;
+// }
 
 void *copiar_persona(void *dato){
   Persona *persona = (Persona*)dato;
