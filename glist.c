@@ -128,7 +128,8 @@ void destruir_persona(void *dato) {
 
 void *copiar_persona(void *dato){
   Persona *persona = (Persona*)dato;
-  Persona *copia = crear_persona(persona->nombre, persona->edad, persona->lugarDeNacimiento);
+  Persona *copia = crear_persona(persona->nombre, persona->edad, 
+                                  persona->lugarDeNacimiento);
 
   return (void*)copia; 
 }

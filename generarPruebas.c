@@ -67,19 +67,25 @@ GList lectura_archivo(GList lista, char *nombreArchivo, int *cantElementos) {
   de 1 a 100, y la nacionalidad, obtenida aleatoriamente de
   listaPaises. 
   */
-void generar_archivo_personas(size_t volumenDatos, GList listaNombres, int cantNombres, GList listaPaises, int cantPaises) {
+void generar_archivo_personas(size_t volumenDatos, GList listaNombres, 
+                              int cantNombres, GList listaPaises, 
+                              int cantPaises) {
+
   FILE *archivo = fopen("censo.txt", "w");
   
   for (int i = 0; i < volumenDatos; i++) {
     int ubicNombre = rand() % cantNombres;
     GNodo *nodoNombre = listaNombres;
-    for (int j = 0; nodoNombre != NULL && j != ubicNombre; nodoNombre = nodoNombre->sig, j++);
+    for (int j = 0; nodoNombre != NULL && j != ubicNombre; 
+          nodoNombre = nodoNombre->sig, j++);
     int ubicPais = rand() % cantPaises;
     GNodo *nodoPais = listaPaises;
-    for (int j = 0; nodoPais != NULL && j != ubicPais; nodoPais = nodoPais->sig, j++);
+    for (int j = 0; nodoPais != NULL && j != ubicPais; 
+          nodoPais = nodoPais->sig, j++);
     int edad = rand() % 100 + 1;
 
-    fprintf(archivo, "%s,%d,%s\r\n", (char*)nodoNombre->dato ,edad, (char*)nodoPais->dato);
+    fprintf(archivo, "%s,%d,%s\r\n", (char*)nodoNombre->dato , 
+            edad, (char*)nodoPais->dato);
   }
 
   fclose(archivo);
@@ -107,7 +113,8 @@ int main() {
   listaNombres = lectura_archivo(listaNombres, "nombres.txt", &cantNombres);
   listaPaises = lectura_archivo(listaPaises, "paises.txt", &cantPaises);
 
-  generar_archivo_personas(volumenDatos, listaNombres, cantNombres, listaPaises, cantPaises);
+  generar_archivo_personas(volumenDatos, listaNombres, cantNombres, 
+                            listaPaises, cantPaises);
   
   glist_destruir(listaNombres, free);
   glist_destruir(listaPaises, free);

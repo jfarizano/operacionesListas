@@ -98,11 +98,13 @@ void salida_archivo(GList lista, char *nombreArchivo) {
 
   for (; nodo->sig != lista; nodo = nodo->sig) {
     persona = (Persona*)nodo->dato;
-    fprintf(archivo, "%s,%d,%s\r\n", persona->nombre ,persona->edad, persona->lugarDeNacimiento);
+    fprintf(archivo, "%s,%d,%s\r\n", persona->nombre ,
+            persona->edad, persona->lugarDeNacimiento);
   }
   
   persona = (Persona*)nodo->dato;
-  fprintf(archivo, "%s,%d,%s\r\n", persona->nombre ,persona->edad, persona->lugarDeNacimiento);
+  fprintf(archivo, "%s,%d,%s\r\n", persona->nombre ,
+          persona->edad, persona->lugarDeNacimiento);
 
   fclose(archivo);
 }
@@ -135,17 +137,21 @@ void maradonizar(void *dato) {
   char *lugarNac = persona->lugarDeNacimiento;
 
   for (int i = 0; i < strlen(nombre); i++) {
-    if (nombre[i] == 'a' || nombre[i] == 'i' || nombre[i] == 'o' || nombre[i] == 'u') {
+    if (nombre[i] == 'a' || nombre[i] == 'i' || 
+        nombre[i] == 'o' || nombre[i] == 'u') {
       nombre[i] = 'e';
-    } else if (nombre[i] == 'A' || nombre[i] == 'I' || nombre[i] == 'O' || nombre[i] == 'U') {
+    } else if (nombre[i] == 'A' || nombre[i] == 'I' || 
+                nombre[i] == 'O' || nombre[i] == 'U') {
       nombre[i] = 'E';
     }
   }
 
   for (int i = 0; i < strlen(lugarNac); i++) {
-    if (lugarNac[i] == 'a' || lugarNac[i] == 'i' || lugarNac[i] == 'o' || lugarNac[i] == 'u') {
+    if (lugarNac[i] == 'a' || lugarNac[i] == 'i' || 
+        lugarNac[i] == 'o' || lugarNac[i] == 'u') {
       lugarNac[i] = 'e';
-    } else if (lugarNac[i] == 'A' || lugarNac[i] == 'I' || lugarNac[i] == 'O' || lugarNac[i] == 'U') {
+    } else if (lugarNac[i] == 'A' || lugarNac[i] == 'I' || 
+                lugarNac[i] == 'O' || lugarNac[i] == 'U') {
       lugarNac[i] = 'E';
     }
   }
@@ -204,7 +210,12 @@ int mercosur(void *dato) {
 
 /*
   main(): None -> int
-  Función principal del programa, 
+  Función principal del programa, genera una lista del tipo GList
+  con los datos del archivo de texto generado en el 
+  programa generarPruebas, y posteriormente se aplican 4 "transformaciones" (2 
+  llamadas a funciones map y 2 a filter), cada una generando un archivo de 
+  salida, independiente uno del otro. 
+  Una vez concluido, se libera la memoria utilizada, finalizando el programa.
 */
 int main() {
 
