@@ -1,0 +1,1 @@
+./generarPruebas.o && ./main.o

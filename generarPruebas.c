@@ -68,7 +68,6 @@ GList lectura_archivo(GList lista, char *nombreArchivo, int *cantElementos) {
   listaPaises. 
   */
 void generar_archivo_personas(size_t volumenDatos, GList listaNombres, int cantNombres, GList listaPaises, int cantPaises) {
-  
   FILE *archivo = fopen("censo.txt", "w");
   
   for (int i = 0; i < volumenDatos; i++) {
