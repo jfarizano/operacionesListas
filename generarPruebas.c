@@ -22,8 +22,8 @@ int caracter_especial(char charARevisar) {
 /*
   lectura_archivo(): GList char* int* -> GList
   Toma una lista y el nombre de un archivo de texto que contenga los elementos
-  a agregar siendo estos elementos una cadena de texo por cada línea del archivo,
-  y devuelve una lista cuyos elementos son estas cadenas.
+  a agregar siendo estos elementos una cadena de texo por cada
+  línea del archivo, y devuelve una lista cuyos elementos son estas cadenas.
   Los caracteres especiales son eliminados
   por el uso de la funcion caracter_especial.
   El parametro *cantElementos es obtenido de la funcion main, 
@@ -61,9 +61,11 @@ GList lectura_archivo(GList lista, char *nombreArchivo, int *cantElementos) {
 }
 /*
   generar_archivo_personas(): size_t GList int GList int -> None
-  Dados una cantidad y los datos necesarios, se generan tantas combinaciones 
-  aleatorias como se hayan indicado usando estos mismos datos 
-  y se realiza la salida al archivo "censo.txt".
+  Toma el valor volumenDatos para definir la cantidad de datos a crear,
+  y genera un archivo en la que cada línea es una entrada de la forma nombre,
+  obtenido aleatoriamente de listaNombres, la edad obtenida en un rango 
+  de 1 a 100, y la nacionalidad, obtenida aleatoriamente de
+  listaPaises. 
   */
 void generar_archivo_personas(size_t volumenDatos, GList listaNombres, int cantNombres, GList listaPaises, int cantPaises) {
   
