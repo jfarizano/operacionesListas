@@ -6,29 +6,30 @@
 #include "glist.h"
 
 
-
-// caracter_especial(): char -> int
-//
-// toma un caracter y devuelve 1 si esta dentro del rango
-// de los caracteres permitidos (segun su valor en la 
-// tabla ascii), o 0 si no pertenece
-
+/*
+  caracter_especial(): char -> int
+  Recibe un caracter y devuelve 1 si esta dentro del rango 
+  de los caracteres permitidos (según su valor en la 
+  tabla ASCII), o 0 si no pertenece.
+*/
 int caracter_especial(char charARevisar) {
   return ((charARevisar >= 33 && charARevisar <= 64) || 
           (charARevisar >= 91 && charARevisar <= 96) || 
           (charARevisar >= 123 && charARevisar <= 127));
 }
 
-// lectura_archivo(): GList, char, int -> GList
-//
-// Toma una lista (GList lista) y un archivo de texto que 
-// contenga los elementos a agregar, y devuelve una lista
-// con los elementos del archivo. Los caracteres especiales
-// son eliminados por el uso de la funcion caracter_especial.
-// El parametro *cantElementos es obtenido de la funcion main, 
-// o donde se aplique, y se usa como contador de elementos de
-// la lista.
 
+/*
+  lectura_archivo(): GList char* int* -> GList
+  Toma una lista y el nombre de un archivo de texto que contenga los elementos
+  a agregar siendo estos elementos una cadena de texo por cada línea del archivo,
+  y devuelve una lista cuyos elementos son estas cadenas.
+  Los caracteres especiales son eliminados
+  por el uso de la funcion caracter_especial.
+  El parametro *cantElementos es obtenido de la funcion main, 
+  o donde se aplique, y se usa como contador de elementos de
+  la lista.
+*/
 GList lectura_archivo(GList lista, char *nombreArchivo, int *cantElementos) {
   FILE *archivo = fopen(nombreArchivo, "r");
   assert(archivo != NULL);
@@ -58,15 +59,14 @@ GList lectura_archivo(GList lista, char *nombreArchivo, int *cantElementos) {
 
   return lista;
 }
-
-// generar_archivo_persona(): size_t GList int GList int -> void
-//
-//
-
-
-
-
+/*
+  generar_archivo_personas(): size_t GList int GList int -> None
+  Dados una cantidad y los datos necesarios, se generan tantas combinaciones 
+  aleatorias como se hayan indicado usando estos mismos datos 
+  y se realiza la salida al archivo "censo.txt".
+  */
 void generar_archivo_personas(size_t volumenDatos, GList listaNombres, int cantNombres, GList listaPaises, int cantPaises) {
+  
   FILE *archivo = fopen("censo.txt", "w");
   
   for (int i = 0; i < volumenDatos; i++) {
@@ -84,6 +84,17 @@ void generar_archivo_personas(size_t volumenDatos, GList listaNombres, int cantN
   fclose(archivo);
 }
 
+/*
+  main(): None -> int
+  Función principal del programa, inicializa el generador de números aleatorios
+  utilizando una semilla basada en el tiempo epoch y elige aleatoriamente la
+  cantidad de datos a generar (en el rango [2000, 52000]). 
+  Se crean y se rellenan las listas que contienen a las cadenas de texto
+  que se encuentran en los archivos "nombres.txt" y "paises.txt".
+  Se realiza la generación de datos aleatorios y su salida
+  al archivo "censo.txt" mediante la función generar_archivo_personas
+  y una vez concluido se libera la memoria utilizada, finalizando el programa.
+*/
 int main() {
   srand(time(NULL));
   size_t volumenDatos = rand() % 50000 + 2000;

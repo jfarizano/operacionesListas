@@ -4,7 +4,12 @@
 #include <assert.h>
 #include "glist.h"
 
-
+/*
+  linea_archivo_a_persona(): char* -> Persona*
+  Dada una cadena de texto que representa una línea del archivo "censo.txt",
+  separa los 3 datos espaciados en la cadena mediante una coma, 
+  y devuelve una estructura de tipo Persona conformada por estos mismos.
+*/
 Persona *linea_archivo_a_persona(char *lineaBuff) {
   int lenLinea = strlen(lineaBuff), edad;
   char *strBuff = malloc(sizeof(char) * 50);
@@ -43,6 +48,16 @@ Persona *linea_archivo_a_persona(char *lineaBuff) {
   return persona;
 }
 
+/*
+  lectura_censo(): GList char* int* -> GList
+  Toma una lista y el nombre de un archivo de texto que contenga los datos
+  a utilizar siendo estos tres datos en tres cadenas de texto por cada
+  línea del archivo, y devuelve una lista cuyos elementos
+  son estructuras de tipo Persona, conformada por estos tres datos.
+  El parametro *cantElementos es obtenido de la funcion main, 
+  o donde se aplique, y se usa como contador de elementos de
+  la lista.
+*/
 GList lectura_censo(GList lista, char *nombre_archivo, int *cantElementos) {
   FILE *archivo = fopen(nombre_archivo, "r");
   assert(archivo != NULL);
@@ -70,6 +85,11 @@ GList lectura_censo(GList lista, char *nombre_archivo, int *cantElementos) {
   return lista;
 }
 
+/*
+  salida_archivo() GList *char -> None
+  Recibe una lista cuyos elementos son estructuras de tipo Persona y realiza
+  la salida de cada uno de los datos al archivo indicado.
+*/
 void salida_archivo(GList lista, char *nombreArchivo) {
   FILE *archivo = fopen(nombreArchivo, "w");
   assert(archivo != NULL);
@@ -87,6 +107,11 @@ void salida_archivo(GList lista, char *nombreArchivo) {
   fclose(archivo);
 }
 
+/*
+  imprimir_datos(): GList -> None
+  Función para testeo: Dada una lista imprime a consola los datos de todas las
+  estructuras de tipo Persona y sus datos que se encuentren en la lista.
+*/
 void imprimir_datos(GList lista) {
   Persona *persona;
 
@@ -98,6 +123,12 @@ void imprimir_datos(GList lista) {
   } 
 }
 
+/*
+  maradonizar(): void* -> None
+  Dado un dato de tipo void*, se castea a un dato de tipo Persona*
+  y se modifican los strings nombre y lugarDeNacimiento reemplazando todas
+  sus vocales por la vocal 'e'.
+*/
 void maradonizar(void *dato) {
   Persona *persona = (Persona*)dato;
   char *nombre = persona->nombre;
@@ -120,6 +151,12 @@ void maradonizar(void *dato) {
   }
 }
 
+/*
+  karate_kid() void* -> None
+  Dado un dato de tipo void*, se castea a un dato de tipo Persona*,
+  y si el string nombre es igual a "Daniel" se modifica
+  agregando un "-san" al final, quedando "Daniel-san".
+*/
 void karate_kid(void *dato) {
   Persona *persona = (Persona*)dato;
   
@@ -134,12 +171,23 @@ void karate_kid(void *dato) {
   }
 }
 
+/*
+  nombre_corto(): void* -> None
+  Dado un dato de tipo void*, se castea a un dato de tipo Persona*,
+  devuelve 1 si la longitud del string nombre es menor o igual a 6,
+  en caso contrario devuelve 0.
+*/
 int nombre_corto(void *dato) {
   Persona *persona = (Persona*)dato;
   return strlen(persona->nombre) <= 6;
 }
 
-
+/*
+  mercosur(): void* -> None
+  Dado un dato de tipo void*, se castea a un dato de tipo Persona*,
+  devuelve 1 si el lugar de nacimiento es uno de los países
+  miembro del Mercosur, en caso contrario devuelve 0.
+*/
 int mercosur(void *dato) {
   int flag = 0;
   Persona *persona = (Persona*)dato;
@@ -154,7 +202,12 @@ int mercosur(void *dato) {
   return flag;
 }
 
+/*
+  main(): None -> int
+  Función principal del programa, 
+*/
 int main() {
+
   int cantPersonas = 0;
   
   GList listaPersonas = glist_crear();
